@@ -1,0 +1,12 @@
+my complete details
+pipeline {
+    agent any
+    stages {
+        stage('list all env variables') {
+            steps {
+                sh 'printenv|sort'
+            }
+        }
+          
+    }
+}
