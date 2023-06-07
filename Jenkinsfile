@@ -47,6 +47,12 @@ pipeline {
 
             }
         }
+         stage('deploy into kubernetescluster production environment') {
+             steps {
+                 sh 'ssh ec-user@172.31.87.187 kubectl apply -f deployment.yml
+             }
+         }
+           
          
 
 
