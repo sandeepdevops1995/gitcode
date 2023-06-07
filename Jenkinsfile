@@ -47,11 +47,7 @@ pipeline {
 
             }
         }
-         stage('deploy docker image into production servers') {
-             steps {
-                 sh 'ssh ec2-user@172.31.87.187 kubectl apply -f deployment.yml'
-             }
-         }
+         
 
 
 
