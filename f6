@@ -1,3 +1,9 @@
-df
-sdflsdjflspfsdpfjfs
-pleasa4 build now
+---
+- name: delete Docker containers named java_app
+  hosts: all
+  tasks:
+    - name: stop and remove Docker containers
+      docker_container:
+        name: java_app
+        state: absent
+
