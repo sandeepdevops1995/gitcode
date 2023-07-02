@@ -20,6 +20,14 @@ pipeline {
          }
          stage('design and build dockerfile') {
              steps {
+
+                 sh '''cat >dockerfile<<EOF
+
+FROM tomee
+
+COPY webapp.war /usr/local/tomee/webapps/javaapp.war
+
+EOF'''
                   sh ''' 
                        cd /home/ubuntu/.jenkins/workspace/test
                        ls
