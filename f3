@@ -1,2 +1,12 @@
 
-vchjhzxmsdmdsmsdmsdmmsdsmdsmd
+
+---
+- name: deploy javaapp as Docker containers in all QA servers
+  hosts: all
+  tasks:
+    - name: create Docker container for javaapp
+      docker_container:
+        name: java_app
+        image: venkatasundeep/myproject
+        ports:
+          - "9090:8080"
