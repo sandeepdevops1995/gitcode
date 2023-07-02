@@ -1,3 +1,50 @@
-fdjdfjdfjkf
-lxljsdlfjsdl
-jlmk,bnkv nv 
+pipeline {
+    agent any
+       stages {
+           stage("continous download") {
+               steps {
+                   git 'https://github.com/intelliqittrainings/maven.git'
+               }
+           }
+           stage("continuous build") {
+               steps {
+                   sh 'mvn package'
+               }
+           }
+           stage("copy artifact to jenkins job") {
+               steps {
+                   sh 'cp -r  /home/ubuntu/.jenkins/workspace/EndtoEndproject/webapp/target/webapp.war  /home/ubuntu/.jenkins/workspace/EndtoEndproject'
+               }
+           }
+           stage("create docker file") {
+               steps {
+                    sh ''' 
+                       cd /home/ubuntu/.jenkins/workspace/EndtoEndproject
+                       ls
+                       docker build -t myproject .
+                     '''
+               }
+           }
+            stage('push image into dockerhub'){
+             steps {
+                 sh 'docker login -u venkatasundeep -p Sandeep@2023'
+                 sh 'docker tag myproject venkatasundeep/myproject '
+                 sh 'docker push venkatasundeep/myproject'         
+                   
+                   
+               }
+           }
+           stage("to deploy docker image into QA servers") {
+               steps {
+                   sh 'ssh ubuntu@172.31.92.185 ansible-playbook playbook1.yml -b'
+                   
+               }
+           }
+            stage('download and run selenium scripts') {
+            steps {
+                git 'https://github.com/intelliqittrainings/FunctionalTesting.git'
+                sh 'java -jar /home/ubuntu/.jenkins/workspace/EndtoEndproject/testing.jar'
+            }
+            }
+       }
+}
